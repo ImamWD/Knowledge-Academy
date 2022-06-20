@@ -242,17 +242,18 @@ function Display()
     let val ="";
     for(let i=0;i<Courses.length;i++)
     {
-        val += `
+        val +=
+              `
                 <tr>
-                    <td>${i+1}</td>
-                    <td>${Courses[i].Name}</td>
-                    <td>${Courses[i].Price} $</td>
-                    <td style="width : 20%">${Courses[i].Description}</td>
-                    <td><img style="width: 120px;height: 70px;text-align: center" class="car-img" src="imgs/courses-image/${Courses[i].Image}"></td>
-                    <td>${Courses[i].hours} h : ${Courses[i].min} m </td>              
-                    <td>${Courses[i].Teacher_Name}</td>
-                    <td><button onclick="delete_item(${i})" class="btn btn-danger">Delete <i class="fa-solid fa-circle-minus"></i></button></td>
-                    <td><button onclick="edit_item(${i})" class="btn btn-info">Edit <i class="fa-solid fa-pen"></i></button></td>
+                    <td><h4>${i+1}</h4></td>
+                    <td><h5>${Courses[i].Name}</h5></td>
+                    <td><h5 style="display:inline">${Courses[i].Price}</h5> <h5 style="color:#d23333; display:inline">$</h5></td>
+                    <td><h5>${Courses[i].Teacher_Name}</h5></td>
+                    <td><h5><i class="fa-solid fa-clock" style="color:#d23333"></i> ${Courses[i].hours} <span style="color:#d23333">h</span> : ${Courses[i].min} <span style="color:#d23333">m</span> </h5></td>
+                    <td><img onclick = "img_onclick(${i})" style="width: 120px;height: 70px;text-align: center" class="car-img" src="imgs/courses-image/${Courses[i].Image}"></td>
+                    <td style="margin:auto"><button class="btn btn-secondary" onclick="Desc_val(${i})"><i class="fa-solid fa-file-medical"></i></button></td>
+                    <td style="width:10%"><button onclick="delete_item(${i})" class="btn btn-danger"> <i class="fa-solid fa-trash"></i> </button></td>
+                    <td style="width:10%"><button onclick="edit_item(${i})" class="btn btn-info"> <i class="fa-solid fa-pen"></i></button></td>
                 </tr>` ;
     }
     rows.innerHTML = val;
@@ -466,16 +467,16 @@ function search_data(value,column)
             table_content +=
             `
             <tr>
-                    <td>${i+1}</td>
-                    <td>${Courses[i].Name}</td>
-                    <td>${Courses[i].Price} $</td>
-                    <td>${Courses[i].Description}</td>
-                    <td><img style="width: 120px;height: 70px;text-align: center" class="car-img" src="imgs/courses-image/${Courses[i].Image}"></td>
-                    <td>${Courses[i].hours} h : ${Courses[i].min} m </td>              
-                    <td>${Courses[i].Teacher_Name}</td>
-                    <td><button onclick="delete_item(${i})" class="btn btn-danger">Delete <i class="fa-solid fa-circle-minus"></i></button></td>
-                    <td><button onclick="edit_item(${i})" class="btn btn-info">Edit <i class="fa-solid fa-pen"></i></button></td>
-                </tr>` ;
+            <td><h4>${i+1}</h4></td>
+            <td><h5>${Courses[i].Name}</h5></td>
+            <td><h5 style="display:inline">${Courses[i].Price}</h5> <h5 style="color:#d23333; display:inline">$</h5></td>
+            <td><h5>${Courses[i].Teacher_Name}</h5></td>
+            <td><h5><i class="fa-solid fa-clock" style="color:#d23333"></i> ${Courses[i].hours} <span style="color:#d23333">h</span> : ${Courses[i].min} <span style="color:#d23333">m</span> </h5></td>
+            <td><img onclick = "img_onclick(${i})" style="width: 120px;height: 70px;text-align: center" class="car-img" src="imgs/courses-image/${Courses[i].Image}"></td>
+            <td style="margin:auto"><button class="btn btn-secondary" onclick="Desc_val(${i})"><i class="fa-solid fa-file-medical"></i></button></td>
+            <td style="width:10%"><button onclick="delete_item(${i})" class="btn btn-danger"> <i class="fa-solid fa-trash"></i> </button></td>
+            <td style="width:10%"><button onclick="edit_item(${i})" class="btn btn-info"> <i class="fa-solid fa-pen"></i></button></td>
+        </tr>` ;
         }
     }
     }
@@ -489,16 +490,16 @@ function search_data(value,column)
             table_content +=
             `
             <tr>
-                    <td>${i+1}</td>
-                    <td>${Courses[i].Name}</td>
-                    <td>${Courses[i].Price} $</td>
-                    <td>${Courses[i].Description}</td>
-                    <td><img style="width: 120px;height: 70px;text-align: center" class="car-img" src="imgs/courses-image/${Courses[i].Image}"></td>
-                    <td>${Courses[i].hours} h : ${Courses[i].min} m </td>              
-                    <td>${Courses[i].Teacher_Name}</td>
-                    <td><button onclick="delete_item(${i})" class="btn btn-danger">Delete <i class="fa-solid fa-circle-minus"></i></button></td>
-                    <td><button onclick="edit_item(${i})" class="btn btn-info">Edit <i class="fa-solid fa-pen"></i></button></td>
-                </tr>` ;
+            <td><h4>${i+1}</h4></td>
+            <td><h5>${Courses[i].Name}</h5></td>
+            <td><h5 style="display:inline">${Courses[i].Price}</h5> <h5 style="color:#d23333; display:inline">$</h5></td>
+            <td><h5>${Courses[i].Teacher_Name}</h5></td>
+            <td><h5><i class="fa-solid fa-clock" style="color:#d23333"></i> ${Courses[i].hours} <span style="color:#d23333">h</span> : ${Courses[i].min} <span style="color:#d23333">m</span> </h5></td>
+            <td><img onclick = "img_onclick(${i})" style="width: 120px;height: 70px;text-align: center" class="car-img" src="imgs/courses-image/${Courses[i].Image}"></td>
+            <td style="margin:auto"><button class="btn btn-secondary" onclick="Desc_val(${i})"><i class="fa-solid fa-file-medical"></i></button></td>
+            <td style="width:10%"><button onclick="delete_item(${i})" class="btn btn-danger"> <i class="fa-solid fa-trash"></i> </button></td>
+            <td style="width:10%"><button onclick="edit_item(${i})" class="btn btn-info"> <i class="fa-solid fa-pen"></i></button></td>
+        </tr>` ;
         }
     }
     }
@@ -512,18 +513,42 @@ function search_data(value,column)
                 table_content +=
                 `
                 <tr>
-                    <td>${i+1}</td>
-                    <td>${Courses[i].Name}</td>
-                    <td>${Courses[i].Price} $</td>
-                    <td>${Courses[i].Description}</td>
-                    <td><img style="width: 120px;height: 70px;text-align: center" class="car-img" src="imgs/courses-image/${Courses[i].Image}"></td>
-                    <td>${Courses[i].hours} h : ${Courses[i].min} m </td>              
-                    <td>${Courses[i].Teacher_Name}</td>
-                    <td><button onclick="delete_item(${i})" class="btn btn-danger">Delete <i class="fa-solid fa-circle-minus"></i></button></td>
-                    <td><button onclick="edit_item(${i})" class="btn btn-info">Edit <i class="fa-solid fa-pen"></i></button></td>
-                </tr>` ;
+                <td><h4>${i+1}</h4></td>
+                <td><h5>${Courses[i].Name}</h5></td>
+                <td><h5 style="display:inline">${Courses[i].Price}</h5> <h5 style="color:#d23333; display:inline">$</h5></td>
+                <td><h5>${Courses[i].Teacher_Name}</h5></td>
+                <td><h5><i class="fa-solid fa-clock" style="color:#d23333"></i> ${Courses[i].hours} <span style="color:#d23333">h</span> : ${Courses[i].min} <span style="color:#d23333">m</span> </h5></td>
+                <td><img onclick = "img_onclick(${i})" style="width: 120px;height: 70px;text-align: center" class="car-img" src="imgs/courses-image/${Courses[i].Image}"></td>
+                <td style="margin:auto"><button class="btn btn-secondary" onclick="Desc_val(${i})"><i class="fa-solid fa-file-medical"></i></button></td>
+                <td style="width:10%"><button onclick="delete_item(${i})" class="btn btn-danger"> <i class="fa-solid fa-trash"></i> </button></td>
+                <td style="width:10%"><button onclick="edit_item(${i})" class="btn btn-info"> <i class="fa-solid fa-pen"></i></button></td>
+            </tr>` ;
             }
         }
     }
     rows.innerHTML = table_content;
+}
+async function Desc_val(index)
+{
+    Swal.fire({
+        title :'Description for '+ Courses[index].Name,
+        text: Courses[index].Description,
+        showClass: {
+          popup: 'animate__animated animate__fadeInDown'
+        },
+        hideClass: {
+          popup: 'animate__animated animate__fadeOutUp'
+        }
+      })
+}
+function img_onclick(index)
+{
+    Swal.fire({
+        title: Courses[index].Name,
+        text: 'Course Image ...',
+        imageUrl: 'imgs/courses-image/' + Courses[index].Image,
+        imageWidth: 400,
+        imageHeight: 200,
+        imageAlt: 'Custom image',
+      })
 }
