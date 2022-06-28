@@ -16,7 +16,6 @@ let Imag;
 let hours;
 let mins;
 let Teacher;
-
 let Courses =[];
 
 let rows = document.getElementById('table_body');
@@ -49,12 +48,12 @@ async function sweetinputs()
         confirmButtonText: 'Add Course',
         html:
         `
-        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Name :</h5>  <input placeholder="Course Name" onkeyup="validation(this,0)"  type="text" id="swal-input1" class="form-control  swal2-input " style="width:80%"/></label>
-        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Price :</h5> <input placeholder="Course Price" onkeyup="validation(this,1)" type="number" id="swal-input2" class="form-control swal2-input" style="width:80%"/></label>
-        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Desc :</h5>  <input placeholder="Course Description" onkeyup="validation(this,2)" type="text" id="swal-input3" class="form-control swal2-input" style="width:80%"/></label>
-        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Image :</h5> <input placeholder="Course Image" type="file" id="swal-input4" class="form-control swal2-input" style="width:80%"/></label>
-        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Period :</h5><input placeholder="hours" onkeyup="validation(this,3)"  type="text" id="swal-input5" class="form-control swal2-input" style="width:30%"/> <input placeholder="min" onkeyup="validation(this,4)"  type="text" id="swal-input7" class="form-control swal2-input" style="width:30%"/></label>
-        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Teacher :</h5>  <input placeholder="Course Teacher" onkeyup="validation(this,5)" type="text" id="swal-input6" class="form-control swal2-input" style="width:80%"/></label>
+        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Name</h5>  <input placeholder="Course Name" onkeyup="validation(this,0)"  type="text" id="swal-input1" class="form-control  swal2-input " style="width:80%"/></label>
+        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Price</h5> <input placeholder="Course Price" onkeyup="validation(this,1)" type="number" id="swal-input2" class="form-control swal2-input" style="width:80%"/></label>
+        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Desc</h5>  <input placeholder="Course Description" onkeyup="validation(this,2)" type="text" id="swal-input3" class="form-control swal2-input" style="width:80%"/></label>
+        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Image</h5> <input placeholder="Course Image" type="file" id="swal-input4" class="form-control swal2-input" style="width:80%"/></label>
+        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Period</h5><input placeholder="hours" onkeyup="validation(this,3)"  type="text" id="swal-input5" class="form-control swal2-input" style="width:30%"/> <input placeholder="min" onkeyup="validation(this,4)"  type="text" id="swal-input7" class="form-control swal2-input" style="width:30%"/></label>
+        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Teacher</h5>  <input placeholder="Course Teacher" onkeyup="validation(this,5)" type="text" id="swal-input6" class="form-control swal2-input" style="width:80%"/></label>
         `,
         
         focusConfirm: true,
@@ -229,7 +228,8 @@ function storeData(Data)
         Image : Image[2],
         hours : Course_data[4],
         min : Course_data[5],
-        Teacher_Name : Course_data[6]
+        Teacher_Name : Course_data[6],
+        Special : 0
     }
     Courses.push(Course);
     localStorage.setItem("Courses", JSON.stringify(Courses));
@@ -254,7 +254,27 @@ function Display()
                     <td style="margin:auto"><button class="btn btn-secondary" onclick="Desc_val(${i})"><i class="fa-solid fa-file-medical"></i></button></td>
                     <td style="width:10%"><button onclick="delete_item(${i})" class="btn btn-danger"> <i class="fa-solid fa-trash"></i> </button></td>
                     <td style="width:10%"><button onclick="edit_item(${i})" class="btn btn-info"> <i class="fa-solid fa-pen"></i></button></td>
-                </tr>` ;
+                   
+                    ` ;
+
+                    if(Courses[i].Special == 1)
+                    {
+                        val+= 
+                        `
+                        <td style="width:10%"> <input type="checkbox" onclick="Special(${i},this)" class="btn btn-info" Checked/> </td>
+                        </tr>
+                        `;
+                    }
+                    else
+                    {
+                        val+= 
+                        `
+                        <td style="width:10%"> <input type="checkbox" onclick="Special(${i},this)" class="btn btn-info"/> </td>
+                        </tr>
+                        `; 
+                    }
+                    
+
     }
     rows.innerHTML = val;
 }
@@ -330,12 +350,12 @@ async function sweetupdate(INDEX)
         confirmButtonText: 'update Course',
         html:
         `
-        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Name :</h5>  <input placeholder="Course Name" onkeyup="validation(this,0)"  type="text" id="swal-input1" class="form-control  swal2-input " style="width:80%"/></label>
-        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Price :</h5> <input placeholder="Course Price" onkeyup="validation(this,1)" type="number" id="swal-input2" class="form-control swal2-input" style="width:80%"/></label>
-        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Desc :</h5>  <input placeholder="Course Description" onkeyup="validation(this,2)" type="text" id="swal-input3" class="form-control swal2-input" style="width:80%"/></label>
-        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Image :</h5> <input placeholder="Course Image" type="file" id="swal-input4" class="form-control swal2-input" style="width:80%"/></label>
-        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Period :</h5><input placeholder="hours" onkeyup="validation(this,3)"  type="text" id="swal-input5" class="form-control swal2-input" style="width:30%"/> <input placeholder="min" onkeyup="validation(this,4)"  type="text" id="swal-input7" class="form-control swal2-input" style="width:30%"/></label>
-        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Teacher :</h5>  <input placeholder="Course Teacher" onkeyup="validation(this,5)" type="text" id="swal-input6" class="form-control swal2-input" style="width:80%"/></label>
+        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Name</h5>  <input placeholder="Course Name" onkeyup="validation(this,0)"  type="text" id="swal-input1" class="form-control  swal2-input " style="width:80%"/></label>
+        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Price</h5> <input placeholder="Course Price" onkeyup="validation(this,1)" type="number" id="swal-input2" class="form-control swal2-input" style="width:80%"/></label>
+        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Desc</h5>  <input placeholder="Course Description" onkeyup="validation(this,2)" type="text" id="swal-input3" class="form-control swal2-input" style="width:80%"/></label>
+        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Image</h5> <input placeholder="Course Image" type="file" id="swal-input4" class="form-control swal2-input" style="width:80%"/></label>
+        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Period</h5><input placeholder="hours" onkeyup="validation(this,3)"  type="text" id="swal-input5" class="form-control swal2-input" style="width:30%"/> <input placeholder="min" onkeyup="validation(this,4)"  type="text" id="swal-input7" class="form-control swal2-input" style="width:30%"/></label>
+        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Teacher</h5>  <input placeholder="Course Teacher" onkeyup="validation(this,5)" type="text" id="swal-input6" class="form-control swal2-input" style="width:80%"/></label>
         `,
         
         focusConfirm: true,
@@ -551,4 +571,17 @@ function img_onclick(index)
         imageHeight: 200,
         imageAlt: 'Custom image',
       })
+}
+
+function Special(index,val)
+{
+    if(val.checked)
+    {
+        Courses[index].Special = 1;
+    }
+    else
+    {
+        Courses[index].Special = 0;
+    }
+    localStorage.setItem("Courses", JSON.stringify(Courses));
 }

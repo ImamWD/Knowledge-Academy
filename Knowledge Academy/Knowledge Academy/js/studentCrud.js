@@ -169,15 +169,15 @@ function Display() {
   for (let i = 0; i < students.length; i++) {
     val += `
                 <tr>
-                    <td>${i + 1}</td>
-                    <td>${students[i].name}</td>
-                    <td>${students[i].average}%</td>
-                    <td style="width : 20%">${
+                    <td><h4>${i + 1}</h4></td>
+                    <td><h5>${students[i].name}</h5></td>
+                    <td><h5>${students[i].average}% </h5></td>
+                    <td style="width : 20%"><h5>${
                       students[i].address
-                    }</td>          
-                    <td>${students[i].age}</td>
-                    <td><button onclick="delete_item(${i})" class="btn btn-danger">Delete <i class="fa-solid fa-circle-minus"></i></button></td>
-                    <td><button onclick="edit_item(${i})" class="btn btn-info">Edit <i class="fa-solid fa-pen"></i></button></td>
+                    }</h5></td>          
+                    <td><h5>${students[i].age}</h5></td>
+                    <td><button onclick="delete_item(${i})" class="btn btn-danger"> <i class="fa-solid fa-trash"></i></button></td>
+                    <td><button onclick="edit_item(${i})" class="btn btn-info"><i class="fa-solid fa-pen"></i></button></td>
                 </tr>`;
   }
   rows.innerHTML = val;
@@ -336,15 +336,17 @@ function search_data(value, column) {
     for (let i = 0; i < students.length; i++) {
       if (students[i].name.includes(value.value)) {
         table_content += `
-            <tr>
-            <td>${i + 1}</td>
-            <td>${students[i].name}</td>
-            <td>${students[i].average}%</td>
-            <td style="width : 20%">${students[i].address}</td>          
-            <td>${students[i].age}</td>
-            <td><button onclick="delete_item(${i})" class="btn btn-danger">Delete <i class="fa-solid fa-circle-minus"></i></button></td>
-            <td><button onclick="edit_item(${i})" class="btn btn-info">Edit <i class="fa-solid fa-pen"></i></button></td>
-                </tr>`;
+        <tr>
+            <td><h4>${i + 1}</h4></td>
+            <td><h5>${students[i].name}</h5></td>
+            <td><h5>${students[i].average}% </h5></td>
+            <td style="width : 20%"><h5>${
+              students[i].address
+            }</h5></td>          
+            <td><h5>${students[i].age}</h5></td>
+            <td><button onclick="delete_item(${i})" class="btn btn-danger"> <i class="fa-solid fa-trash"></i></button></td>
+            <td><button onclick="edit_item(${i})" class="btn btn-info"><i class="fa-solid fa-pen"></i></button></td>
+        </tr>`;
       }
     }
   } else if (column === 1) {
@@ -352,15 +354,17 @@ function search_data(value, column) {
     for (let i = 0; i < students.length; i++) {
       if (students[i].address.includes(value.value)) {
         table_content += `
-            <tr>
-            <td>${i + 1}</td>
-            <td>${students[i].name}</td>
-            <td>${students[i].average}%</td>
-            <td style="width : 20%">${students[i].address}</td>          
-            <td>${students[i].age}</td>
-            <td><button onclick="delete_item(${i})" class="btn btn-danger">Delete <i class="fa-solid fa-circle-minus"></i></button></td>
-            <td><button onclick="edit_item(${i})" class="btn btn-info">Edit <i class="fa-solid fa-pen"></i></button></td>
-                </tr>`;
+        <tr>
+        <td><h4>${i + 1}</h4></td>
+        <td><h5>${students[i].name}</h5></td>
+        <td><h5>${students[i].average}% </h5></td>
+        <td style="width : 20%"><h5>${
+          students[i].address
+        }</h5></td>          
+        <td><h5>${students[i].age}</h5></td>
+        <td><button onclick="delete_item(${i})" class="btn btn-danger"> <i class="fa-solid fa-trash"></i></button></td>
+        <td><button onclick="edit_item(${i})" class="btn btn-info"><i class="fa-solid fa-pen"></i></button></td>
+    </tr>`;
       }
     }
   }
