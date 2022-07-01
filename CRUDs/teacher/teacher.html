@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Table</title>
+    <!--css links-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.3.3/sweetalert2.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nuosu+SIL&family=PT+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--css style-->
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Nuosu SIL', serif;
+            font-family: 'PT Sans', sans-serif;
+        }
+        .table>:not(caption)>*>* {
+            padding: 2.5rem .5rem;
+            background-color: var(--bs-table-bg);
+            border-bottom-width: 1px;
+            box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+        }
+        .car-table {
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 0;
+            transition: 2s all;
+            z-index: 1;
+            transform: translateX(0%);
+        }
+        .bg {
+            background-color: #001f54;
+            width: 100%; 
+            height: 70px; 
+            overflow: hidden;
+            justify-content: flex-end;
+        }
+        .add-del-btn {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .form-control {
+            width: 50%; 
+            margin-top: 10px; 
+            height: 38px;
+            margin-left: 20px;
+        }
+        .form-select {
+            margin-left: 10px;
+            border-radius: 5px;
+            height: 37px;
+        }
+        .input-group {
+            width: 10%; 
+            margin-top: 10px; 
+            margin-right: 130px
+        }
+        .Add-Delete-btn {
+            margin-top: 10px;
+            width: 130px;
+        }
+        .btn-success {
+            height: 38px; 
+            padding-right: 5px;
+            background-color: #55a630;
+        }
+        .btn-danger {
+            margin-left: 10px;
+            margin-right: 10px;
+            height: 38px;
+            background-color: #ba181b;
+        }
+        .fa {
+            margin-right: 15px;
+        }
+        .table {
+            background-color: #f0efeb;
+        }
+        .btn-info {
+            background-color: #4361ee;
+        }
+    </style>
+</head>
+<body>
+    <!--Teacher Table-->
+    <section class="car-table" id="table">
+        <div class="bg">
+            <div class="add-del-btn">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="search" onkeyup="select_search(this)" />
+                <div class="input-group mb-3">
+                    <select class="form-select" id="sel_search">
+                        <option value="name">Name</option>
+                    </select>
+                </div>
+                <button onclick="Add_course()" class="btn btn-success Add-Delete-btn">
+                    <i class="fa fa-plus"></i>Add Teacher
+                </button>
+                <button onclick="delete_all()" class="btn btn-danger Add-Delete-btn">
+                    <i class="fa fa-minus"></i>Delete All
+                </button>
+            </div>
+        </div>
+
+        <table class="table table-primary table-hover m-auto">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col" >Teacher Name</th>
+                    <th scope="col" >Teacher Photo</th>
+                    <th scope="col" >Teacher Position</th>
+                    <th scope="col">Teacher Email</th>
+                    <th scope="col">Teacher Address</th>
+                    <th scope="col">Teacher Courses</th>
+                    <th scope="col">Edit Item</th>
+                    <th scope="col">Delete Item</th>
+                </tr>
+            </thead>
+            <tbody id="table_body">
+
+            </tbody>
+        </table>
+    </section>
+    
+    <!--js links-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.3.3/sweetalert2.min.js" integrity="sha512-F3F53+tMh/CBxMQ60GN5R4EiFW7PcuND+9IDC3Qpkwc7SfxgzHigRdUO3+2+mNal2ot3Wp6KR0zx8r8BbsW+Bg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="teacher.js"></script>
+</body>
+</html>
