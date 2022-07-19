@@ -17,6 +17,7 @@ let hours;
 let mins;
 let Teacher;
 let Courses =[];
+let Upload_path;
 
 let rows = document.getElementById('table_body');
 //____________Show initial data from localstorge_______
@@ -35,7 +36,6 @@ function Add_course()
     des();
 }
 //___________________init sweetalert2__________________
-
 function des()
 {
     Swal.disableButtons();
@@ -43,52 +43,83 @@ function des()
 //___________________Input sweetalert2_________________
 async function sweetinputs()
 {
+    let teacher = JSON.parse(localStorage.getItem("teacherRecord"));
+    let val1 ="";
+    for(let i=0;i<teacher.length;i++)
+    {
+      val1 +=
+      `
+      <option selected>${teacher[i].Name}</option>
+
+      `;
+    }
     const { value: formValues } = await Swal.fire({
-        title: 'Add course',
-        confirmButtonText: 'Add Course',
-        html:
-        `
-        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Name</h5>  <input placeholder="Course Name" onkeyup="validation(this,0)"  type="text" id="swal-input1" class="form-control  swal2-input " style="width:80%"/></label>
-        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Price</h5> <input placeholder="Course Price" onkeyup="validation(this,1)" type="number" id="swal-input2" class="form-control swal2-input" style="width:80%"/></label>
-        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Desc</h5>  <input placeholder="Course Description" onkeyup="validation(this,2)" type="text" id="swal-input3" class="form-control swal2-input" style="width:80%"/></label>
-        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Image</h5> <input placeholder="Course Image" type="file" id="swal-input4" class="form-control swal2-input" style="width:80%"/></label>
-        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Period</h5><input placeholder="hours" onkeyup="validation(this,3)"  type="text" id="swal-input5" class="form-control swal2-input" style="width:30%"/> <input placeholder="min" onkeyup="validation(this,4)"  type="text" id="swal-input7" class="form-control swal2-input" style="width:30%"/></label>
-        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Teacher</h5>  <input placeholder="Course Teacher" onkeyup="validation(this,5)" type="text" id="swal-input6" class="form-control swal2-input" style="width:80%"/></label>
-        `,
-        
+        title: 'Add Course',
+        confirmButtonText: 'Add course',
+        confirmButtonColor: '#2fa74e',
+        html:  `<label style = "display:flex"> <p style="width:25%; margin-top: revert;">Name</p>  <input placeholder="Course Name" onkeyup="validation(this,0)"  type="text" id="swal-input1" class="form-control  swal2-input " style="width:80%"/></label>
+                <label style = "display:flex"> <p style="width:25%; margin-top: revert;">Price</p> <input placeholder="Course Price" onkeyup="validation(this,1)" type="number" id="swal-input2" class="form-control swal2-input" style="width:80%"/></label>
+                <label style = "display:flex"> <p style="width:25%; margin-top: revert;">Description</p>  <input placeholder="Course Description" onkeyup="validation(this,2)" type="text" id="swal-input3" class="form-control swal2-input" style="width:80%"/></label>
+                <label style = "display:flex"> <p style="width:25%; margin-top: revert;">Image</p> <input placeholder="Course Image" type="file" id="swal-input4" class="form-control swal2-input" style="width:80%"  onchange="FileValidation(this)"/></label>
+                <label style = "display:flex"> 
+                    <p style="width:25%; margin-top: revert;">Period</p>
+                    <input placeholder="hours" onkeyup="validation(this,3)" type="text" id="swal-input5" class="form-control swal2-input" style="width:30%"/>
+                    <p style="width:5%; margin-top: revert; margin-right: 10px; font-weight: bold;">:</p>
+                    <input placeholder="min" onkeyup="validation(this,4)"  type="text" id="swal-input7" class="form-control swal2-input" style="width:30%"/>
+                </label>
+                <label style = "display:flex"> <p style="width:25%; margin-top: revert;">Teacher</p>
+               <select     onchange ="validation(this,10)" id="swal-input6" class="form-control swal2-input" style="width:80%">
+               `
+               +
+                val1
+               +
+               `
+            </select>
+            </label>
+                
+                `,
+       
         focusConfirm: true,
-        preConfirm: () => {	
-          return [
-            document.getElementById('swal-input1').value,
-            document.getElementById('swal-input2').value,
-            document.getElementById('swal-input3').value,
-            document.getElementById('swal-input4').value,
-            document.getElementById('swal-input5').value,
-            document.getElementById('swal-input7').value,
-            document.getElementById('swal-input6').value
-          ]
+        preConfirm: () => {
+            return [
+                document.getElementById('swal-input1').value,
+                document.getElementById('swal-input2').value,
+                document.getElementById('swal-input3').value,
+                document.getElementById('swal-input4').value,
+                document.getElementById('swal-input5').value,
+                document.getElementById('swal-input7').value,
+                document.getElementById('swal-input6').value
+            ]
         }
-      })
+    })
       if (formValues) {
         Swal.fire({
             title: 'Do you want to save the changes?',
             showDenyButton: true,
             showCancelButton: true,
             confirmButtonText: 'Save',
+            confirmButtonColor: '#2fa74e',
             denyButtonText: `Don't save`,
           }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
               storeData(JSON.stringify(formValues));
-              Swal.fire('Saved New Course ', '', 'success')
+              Swal.fire('Saved New Course.', '', 'success')
             } else if (result.isDenied) {
               Swal.fire('Changes are not saved', '', 'info')
             }
           })
       };
-
+ 
 }
+FileValidation = (E) => {
 
+    const reader = new FileReader();
+    reader.addEventListener('load', function() {
+        Upload_path = reader.result;
+    })    ;
+    reader.readAsDataURL(E.files[0]);
+}
 //_________________Validation function ________________
  function validation(V,flag)
 {
@@ -174,24 +205,9 @@ async function sweetinputs()
            V.classList.add("is-invalid");
        }
     }
-    else//----------course Teacher validation
-    {    
-        condition = /^[A-Z][a-z]{2,10}$/;
-        if(condition.test(V.value))
-        {
-            i5=true;
-            V.classList.add("is-valid");
-            V.classList.remove("is-invalid");
-        }
-        else
-        {
-            i5=false;
-            V.classList.remove("is-valid");
-            V.classList.add("is-invalid");
-        }
-    }
+    
 
-    if(i1 && i2 && i3 && i4 && i5 && i6)//-to enable and disable sweetalert buttons
+    if(i1 && i2 && i3 && i4  && i6)//-to enable and disable sweetalert buttons
     {
         test_var = true;
         Swal.enableButtons();
@@ -202,10 +218,10 @@ async function sweetinputs()
         Swal.disableButtons();	
     }
 }
-
 //____________________Store function___________________
 function storeData(Data)
 {
+
     //-convert data from String format to Array  
     let Course_init =[]
     Course_init= Data.split("\"");
@@ -219,13 +235,14 @@ function storeData(Data)
             j++;
         }
     }
-    let Image = Course_data[3].split("\\\\");
+
+     //let Image = Course_data[3].split("\\\\");
    let Course = 
     {
         Name : Course_data[0],
         Price : Course_data[1],
         Description : Course_data[2],
-        Image : Image[2],
+        Image : Upload_path,
         hours : Course_data[4],
         min : Course_data[5],
         Teacher_Name : Course_data[6],
@@ -235,27 +252,28 @@ function storeData(Data)
     localStorage.setItem("Courses", JSON.stringify(Courses));
     Display();
 }
-
 //________________Display data on table _______________
 function Display()
 {
     let val ="";
     for(let i=0;i<Courses.length;i++)
     {
-        val +=
-              `
-                <tr>
-                    <td><h4>${i+1}</h4></td>
-                    <td><h5>${Courses[i].Name}</h5></td>
-                    <td><h5 style="display:inline">${Courses[i].Price}</h5> <h5 style="color:#d23333; display:inline">$</h5></td>
-                    <td><h5>${Courses[i].Teacher_Name}</h5></td>
-                    <td><h5><i class="fa-solid fa-clock" style="color:#d23333"></i> ${Courses[i].hours} <span style="color:#d23333">h</span> : ${Courses[i].min} <span style="color:#d23333">m</span> </h5></td>
-                    <td><img onclick = "img_onclick(${i})" style="width: 120px;height: 70px;text-align: center" class="car-img" src="imgs/courses-image/${Courses[i].Image}"></td>
-                    <td style="margin:auto"><button class="btn btn-secondary" onclick="Desc_val(${i})"><i class="fa-solid fa-file-medical"></i></button></td>
-                    <td style="width:10%"><button onclick="delete_item(${i})" class="btn btn-danger"> <i class="fa-solid fa-trash"></i> </button></td>
-                    <td style="width:10%"><button onclick="edit_item(${i})" class="btn btn-info"> <i class="fa-solid fa-pen"></i></button></td>
-                   
-                    ` ;
+        val +=  `<tr>
+                    <th>${i+1}</th>
+                    <td>${Courses[i].Name}</td>
+                    <td>${Courses[i].Price} <span style="font-weight: bold;">$</span></td>
+                    <td>${Courses[i].Teacher_Name}</td>
+                    <td>
+                        <i class="fa-solid fa-clock" style="font-weight: bold;"></i> ${Courses[i].hours}
+                        <span style="font-weight: bold;">h</span> 
+                        <span style="font-weight: bold;">:</span> ${Courses[i].min}
+                        <span style="font-weight: bold;">m</span>
+                    </td>
+                    <td><img onclick = "img_onclick(${i})" style="width: 120px; height: 70px; text-align: center;" class="car-img" src="${Courses[i].Image}"></td>
+                    <td style="margin:auto;"><button class="btn btn-secondary" onclick="Desc_val(${i})"><i class="fa-solid fa-file-medical"></i></button></td>
+                    <td style="width:10%;"><button onclick="edit_item(${i})" class="btn btn-info"> <i class="fa-solid fa-pen"></i></button></td>
+                    <td style="width:10%;"><button onclick="delete_item(${i})" class="btn btn-danger"> <i class="fa-solid fa-trash"></i> </button></td>
+                `;
 
                     if(Courses[i].Special == 1)
                     {
@@ -279,7 +297,6 @@ function Display()
     rows.innerHTML = val;
 }
 //-------------------Delete functions------------------
-
 //________________On click delete button_______________
 function delete_item(index)
 {
@@ -296,12 +313,11 @@ function delete_item(index)
             Courses.splice(index,1);
             localStorage.setItem("Courses", JSON.stringify(Courses));
             Display();
-          Swal.fire('Deleted!','Your file has been deleted.','success')
+          Swal.fire('Deleted!','Courses has been deleted.','success')
         }
       })
    
 }
-
 //______________On click delete All button_____________
 function delete_all()
 {
@@ -321,13 +337,12 @@ function delete_all()
             Courses.pop();
             }
             localStorage.setItem('Courses',JSON.stringify(Courses));
-            Display(); 
-          Swal.fire('Deleted!','Your file has been deleted.','success')
+            Display();
+          Swal.fire('Deleted!','Your course has been deleted.','success')
         }
       })
 }
 //-------------------Edit functions--------------------
-
 //___________________Edit any Course___________________
 function edit_item(index)
 {
@@ -341,25 +356,45 @@ function edit_item(index)
     sweetupdate(index);
     set_data();
 }
-
 //___________________Update sweetalert2________________
 async function sweetupdate(INDEX)
+{let teacher = JSON.parse(localStorage.getItem("teacherRecord"));
+let val1 ="";
+for(let i=0;i<teacher.length;i++)
 {
-    const { value: formValues } = await Swal.fire({
-        title: 'Update '+Courses[INDEX].Name+' course',
-        confirmButtonText: 'update Course',
-        html:
-        `
-        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Name</h5>  <input placeholder="Course Name" onkeyup="validation(this,0)"  type="text" id="swal-input1" class="form-control  swal2-input " style="width:80%"/></label>
-        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Price</h5> <input placeholder="Course Price" onkeyup="validation(this,1)" type="number" id="swal-input2" class="form-control swal2-input" style="width:80%"/></label>
-        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Desc</h5>  <input placeholder="Course Description" onkeyup="validation(this,2)" type="text" id="swal-input3" class="form-control swal2-input" style="width:80%"/></label>
-        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Image</h5> <input placeholder="Course Image" type="file" id="swal-input4" class="form-control swal2-input" style="width:80%"/></label>
-        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Period</h5><input placeholder="hours" onkeyup="validation(this,3)"  type="text" id="swal-input5" class="form-control swal2-input" style="width:30%"/> <input placeholder="min" onkeyup="validation(this,4)"  type="text" id="swal-input7" class="form-control swal2-input" style="width:30%"/></label>
-        <label style = "display:flex"> <h5 style="width:20%; margin-top: revert;">Teacher</h5>  <input placeholder="Course Teacher" onkeyup="validation(this,5)" type="text" id="swal-input6" class="form-control swal2-input" style="width:80%"/></label>
-        `,
-        
+  val1 +=
+  `
+  <option selected>${teacher[i].Name}</option>
+
+  `;
+}
+const { value: formValues } = await Swal.fire({
+    title: 'Update for ' + Courses[INDEX].Name +' Course',
+    confirmButtonText: 'Add course',
+    confirmButtonColor: '#2fa74e',
+    html:  `<label style = "display:flex"> <p style="width:25%; margin-top: revert;">Name</p>  <input placeholder="Course Name" onkeyup="validation(this,0)"  type="text" id="swal-input1" class="form-control  swal2-input " style="width:80%"/></label>
+            <label style = "display:flex"> <p style="width:25%; margin-top: revert;">Price</p> <input placeholder="Course Price" onkeyup="validation(this,1)" type="number" id="swal-input2" class="form-control swal2-input" style="width:80%"/></label>
+            <label style = "display:flex"> <p style="width:25%; margin-top: revert;">Description</p>  <input placeholder="Course Description" onkeyup="validation(this,2)" type="text" id="swal-input3" class="form-control swal2-input" style="width:80%"/></label>
+            <label style = "display:flex"> <p style="width:25%; margin-top: revert;">Image</p> <input placeholder="Course Image" type="file" id="swal-input4" class="form-control swal2-input" style="width:80%" onchange="FileValidation(this)" /></label>
+            <label style = "display:flex"> 
+                <p style="width:25%; margin-top: revert;">Period</p>
+                <input placeholder="hours" onkeyup="validation(this,3)" type="text" id="swal-input5" class="form-control swal2-input" style="width:30%"/>
+                <p style="width:5%; margin-top: revert; margin-right: 10px; font-weight: bold;">:</p>
+                <input placeholder="min" onkeyup="validation(this,4)"  type="text" id="swal-input7" class="form-control swal2-input" style="width:30%"/>
+            </label>
+            <label style = "display:flex"> <p style="width:25%; margin-top: revert;">Teacher</p>
+           <select     onchange="validation(this,10)" id="swal-input6" class="form-control swal2-input" style="width:80%">
+           `
+           +
+            val1
+           +
+           `
+        </select>
+        </label>
+            
+            `,
         focusConfirm: true,
-        preConfirm: () => {	
+        preConfirm: () => {
           return [
             document.getElementById('swal-input1').value,
             document.getElementById('swal-input2').value,
@@ -377,19 +412,19 @@ async function sweetupdate(INDEX)
             showDenyButton: true,
             showCancelButton: true,
             confirmButtonText: 'Save',
+            confirmButtonColor: "#218838",
             denyButtonText: `Don't save`,
           }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
                 update(JSON.stringify(formValues),INDEX);
-              Swal.fire('Saved Course Update', '', 'success')
+              Swal.fire('Course Updated.', '', 'success')
             } else if (result.isDenied) {
               Swal.fire('Changes are not saved', '', 'info')
             }
           })
       };
 }
-
 //_____________show course data in sweetalert__________
 function set_data()
 {
@@ -411,7 +446,6 @@ function set_data()
     In1.classList.add('is-valid');
     In2.classList.add('is-valid');
     In3.classList.add('is-valid');
-    In4.classList.add('is-valid');
     In5.classList.add('is-valid');
     In6.classList.add('is-valid');
 
@@ -422,7 +456,6 @@ function set_data()
     i5 = true;
     i6 = true;
 }
-
 //_____________________Update Course___________________
 function update(Data,index)
 {
@@ -445,7 +478,7 @@ function update(Data,index)
         Courses[index].Description = Course_data[2];
         if(Image[2]!=null)
         {
-        Courses[index].Image = Image[2];
+        Courses[index].Image = Upload_path;
         }
         Courses[index].hours = Course_data[4];
         Courses[index].min = Course_data[5];
@@ -454,7 +487,6 @@ function update(Data,index)
         Display();
 } 
 //-------------------Search functions------------------
-
 //_____________________choose select___________________
 let selector = document.getElementById('sel_search');
 function select_search(Value)
@@ -472,7 +504,6 @@ function select_search(Value)
         search_data(Value,2);
     }
 }
-
 //________________show data after search________________
 function search_data(value,column)
 {
@@ -485,18 +516,39 @@ function search_data(value,column)
         if(Courses[i].Name.includes(value.value))
         {
             table_content +=
-            `
-            <tr>
-            <td><h4>${i+1}</h4></td>
-            <td><h5>${Courses[i].Name}</h5></td>
-            <td><h5 style="display:inline">${Courses[i].Price}</h5> <h5 style="color:#d23333; display:inline">$</h5></td>
-            <td><h5>${Courses[i].Teacher_Name}</h5></td>
-            <td><h5><i class="fa-solid fa-clock" style="color:#d23333"></i> ${Courses[i].hours} <span style="color:#d23333">h</span> : ${Courses[i].min} <span style="color:#d23333">m</span> </h5></td>
-            <td><img onclick = "img_onclick(${i})" style="width: 120px;height: 70px;text-align: center" class="car-img" src="imgs/courses-image/${Courses[i].Image}"></td>
-            <td style="margin:auto"><button class="btn btn-secondary" onclick="Desc_val(${i})"><i class="fa-solid fa-file-medical"></i></button></td>
-            <td style="width:10%"><button onclick="delete_item(${i})" class="btn btn-danger"> <i class="fa-solid fa-trash"></i> </button></td>
-            <td style="width:10%"><button onclick="edit_item(${i})" class="btn btn-info"> <i class="fa-solid fa-pen"></i></button></td>
-        </tr>` ;
+            `<tr>
+            <th>${i+1}</th>
+            <td>${Courses[i].Name}</td>
+            <td>${Courses[i].Price} <span style="font-weight: bold;">$</span></td>
+            <td>${Courses[i].Teacher_Name}</td>
+            <td>
+                <i class="fa-solid fa-clock" style="font-weight: bold;"></i> ${Courses[i].hours}
+                <span style="font-weight: bold;">h</span> 
+                <span style="font-weight: bold;">:</span> ${Courses[i].min}
+                <span style="font-weight: bold;">m</span>
+            </td>
+            <td><img onclick = "img_onclick(${i})" style="width: 120px; height: 70px; text-align: center;" class="car-img" src="${Courses[i].Image}"></td>
+            <td style="margin:auto;"><button class="btn btn-secondary" onclick="Desc_val(${i})"><i class="fa-solid fa-file-medical"></i></button></td>
+            <td style="width:10%;"><button onclick="edit_item(${i})" class="btn btn-info"> <i class="fa-solid fa-pen"></i></button></td>
+            <td style="width:10%;"><button onclick="delete_item(${i})" class="btn btn-danger"> <i class="fa-solid fa-trash"></i> </button></td>
+             `;
+
+                if(Courses[i].Special == 1)
+                {
+                    table_content+= 
+                    `
+                    <td style="width:10%"> <input type="checkbox" onclick="Special(${i},this)" class="btn btn-info" Checked/> </td>
+                    </tr>
+                    `;
+                }
+                else
+                {
+                    table_content+= 
+                    `
+                    <td style="width:10%"> <input type="checkbox" onclick="Special(${i},this)" class="btn btn-info"/> </td>
+                    </tr>
+                    `; 
+                } 
         }
     }
     }
@@ -508,18 +560,39 @@ function search_data(value,column)
         if(Courses[i].Price.includes(value.value))
         {
             table_content +=
-            `
-            <tr>
-            <td><h4>${i+1}</h4></td>
-            <td><h5>${Courses[i].Name}</h5></td>
-            <td><h5 style="display:inline">${Courses[i].Price}</h5> <h5 style="color:#d23333; display:inline">$</h5></td>
-            <td><h5>${Courses[i].Teacher_Name}</h5></td>
-            <td><h5><i class="fa-solid fa-clock" style="color:#d23333"></i> ${Courses[i].hours} <span style="color:#d23333">h</span> : ${Courses[i].min} <span style="color:#d23333">m</span> </h5></td>
-            <td><img onclick = "img_onclick(${i})" style="width: 120px;height: 70px;text-align: center" class="car-img" src="imgs/courses-image/${Courses[i].Image}"></td>
-            <td style="margin:auto"><button class="btn btn-secondary" onclick="Desc_val(${i})"><i class="fa-solid fa-file-medical"></i></button></td>
-            <td style="width:10%"><button onclick="delete_item(${i})" class="btn btn-danger"> <i class="fa-solid fa-trash"></i> </button></td>
-            <td style="width:10%"><button onclick="edit_item(${i})" class="btn btn-info"> <i class="fa-solid fa-pen"></i></button></td>
-        </tr>` ;
+            `<tr>
+                <th>${i+1}</th>
+                <td>${Courses[i].Name}</td>
+                <td>${Courses[i].Price} <span style="font-weight: bold;">$</span></td>
+                <td>${Courses[i].Teacher_Name}</td>
+                <td>
+                    <i class="fa-solid fa-clock" style="font-weight: bold;"></i> ${Courses[i].hours}
+                    <span style="font-weight: bold;">h</span> 
+                    <span style="font-weight: bold;">:</span> ${Courses[i].min}
+                    <span style="font-weight: bold;">m</span>
+                </td>
+                <td><img onclick = "img_onclick(${i})" style="width: 120px; height: 70px; text-align: center;" class="car-img" src="${Courses[i].Image}"></td>
+                <td style="margin:auto;"><button class="btn btn-secondary" onclick="Desc_val(${i})"><i class="fa-solid fa-file-medical"></i></button></td>
+                <td style="width:10%;"><button onclick="edit_item(${i})" class="btn btn-info"> <i class="fa-solid fa-pen"></i></button></td>
+                <td style="width:10%;"><button onclick="delete_item(${i})" class="btn btn-danger"> <i class="fa-solid fa-trash"></i> </button></td>
+            `;
+
+                    if(Courses[i].Special == 1)
+                    {
+                        table_content+= 
+                        `
+                        <td style="width:10%"> <input type="checkbox" onclick="Special(${i},this)" class="btn btn-info" Checked/> </td>
+                        </tr>
+                        `;
+                    }
+                    else
+                    {
+                        table_content+= 
+                        `
+                        <td style="width:10%"> <input type="checkbox" onclick="Special(${i},this)" class="btn btn-info"/> </td>
+                        </tr>
+                        `; 
+                    }
         }
     }
     }
@@ -531,18 +604,39 @@ function search_data(value,column)
             if(Courses[i].Teacher_Name.includes(value.value))
             {
                 table_content +=
-                `
-                <tr>
-                <td><h4>${i+1}</h4></td>
-                <td><h5>${Courses[i].Name}</h5></td>
-                <td><h5 style="display:inline">${Courses[i].Price}</h5> <h5 style="color:#d23333; display:inline">$</h5></td>
-                <td><h5>${Courses[i].Teacher_Name}</h5></td>
-                <td><h5><i class="fa-solid fa-clock" style="color:#d23333"></i> ${Courses[i].hours} <span style="color:#d23333">h</span> : ${Courses[i].min} <span style="color:#d23333">m</span> </h5></td>
-                <td><img onclick = "img_onclick(${i})" style="width: 120px;height: 70px;text-align: center" class="car-img" src="imgs/courses-image/${Courses[i].Image}"></td>
-                <td style="margin:auto"><button class="btn btn-secondary" onclick="Desc_val(${i})"><i class="fa-solid fa-file-medical"></i></button></td>
-                <td style="width:10%"><button onclick="delete_item(${i})" class="btn btn-danger"> <i class="fa-solid fa-trash"></i> </button></td>
-                <td style="width:10%"><button onclick="edit_item(${i})" class="btn btn-info"> <i class="fa-solid fa-pen"></i></button></td>
-            </tr>` ;
+                `<tr>
+                <th>${i+1}</th>
+                <td>${Courses[i].Name}</td>
+                <td>${Courses[i].Price} <span style="font-weight: bold;">$</span></td>
+                <td>${Courses[i].Teacher_Name}</td>
+                <td>
+                    <i class="fa-solid fa-clock" style="font-weight: bold;"></i> ${Courses[i].hours}
+                    <span style="font-weight: bold;">h</span> 
+                    <span style="font-weight: bold;">:</span> ${Courses[i].min}
+                    <span style="font-weight: bold;">m</span>
+                </td>
+                <td><img onclick = "img_onclick(${i})" style="width: 120px; height: 70px; text-align: center;" class="car-img" src="${Courses[i].Image}"></td>
+                <td style="margin:auto;"><button class="btn btn-secondary" onclick="Desc_val(${i})"><i class="fa-solid fa-file-medical"></i></button></td>
+                <td style="width:10%;"><button onclick="edit_item(${i})" class="btn btn-info"> <i class="fa-solid fa-pen"></i></button></td>
+                <td style="width:10%;"><button onclick="delete_item(${i})" class="btn btn-danger"> <i class="fa-solid fa-trash"></i> </button></td>
+                `;
+
+                    if(Courses[i].Special == 1)
+                    {
+                        table_content+= 
+                        `
+                        <td style="width:10%"> <input type="checkbox" onclick="Special(${i},this)" class="btn btn-info" Checked/> </td>
+                        </tr>
+                        `;
+                    }
+                    else
+                    {
+                        table_content+= 
+                        `
+                        <td style="width:10%"> <input type="checkbox" onclick="Special(${i},this)" class="btn btn-info"/> </td>
+                        </tr>
+                        `; 
+                    }
             }
         }
     }
@@ -566,13 +660,12 @@ function img_onclick(index)
     Swal.fire({
         title: Courses[index].Name,
         text: 'Course Image ...',
-        imageUrl: 'imgs/courses-image/' + Courses[index].Image,
+        imageUrl: Courses[index].Image,
         imageWidth: 400,
         imageHeight: 200,
         imageAlt: 'Custom image',
       })
 }
-
 function Special(index,val)
 {
     if(val.checked)

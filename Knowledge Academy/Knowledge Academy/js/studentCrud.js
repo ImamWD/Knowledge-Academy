@@ -23,7 +23,8 @@ let selector = document.getElementById("sel_search");
 //show initial data from the local storage
 if (JSON.parse(localStorage.getItem("students")) == null) {
   students = [];
-} else {
+} 
+else {
   students = JSON.parse(localStorage.getItem("students"));
   Display();
 }
@@ -44,11 +45,13 @@ async function sweetinputs() {
   const { value: formValues } = await Swal.fire({
     title: "Add Student",
     confirmButtonText: "Add Student",
-    html: `
-        <label style = "display:flex"> <h5 style="width:30%; margin-top: revert;">Student Name :</h5>  <input placeholder="Name" onkeyup="validation(this,0)"  type="text" id="swal-input1" class="form-control  swal2-input " style="width:80%"/></label>
-        <label style = "display:flex"> <h5 style="width:30%; margin-top: revert;">Student Average:</h5> <input placeholder="Average" onkeyup="validation(this,1)" type="number" id="swal-input2" class="form-control swal2-input" style="width:80%"/></label>
-        <label style = "display:flex"> <h5 style="width:30%; margin-top: revert;">Student Address:</h5>  <input placeholder="Address" onkeyup="validation(this,2)" type="text" id="swal-input3" class="form-control swal2-input" style="width:80%"/></label>
-        <label style = "display:flex"> <h5 style="width:30%; margin-top: revert;">Student Age:</h5> <input placeholder="Age" onkeyup="validation(this,3)" type="number" id="swal-input4" class="form-control swal2-input" style="width:80%"/></label>
+    confirmButtonColor: "#218838",
+    html:
+        `
+        <label style = "display:flex"> <p style="width:25%; margin-top: revert;">Name</p> <input placeholder="Student Name" onkeyup="validation(this,0)"  type="text" id="swal-input1" class="form-control  swal2-input " style="width:80%"/></label>
+        <label style = "display:flex"> <p style="width:25%; margin-top: revert;">Average</p> <input placeholder="Student Average" onkeyup="validation(this,1)" type="number" id="swal-input2" class="form-control swal2-input" style="width:80%"/></label>
+        <label style = "display:flex"> <p style="width:25%; margin-top: revert;">Address</p> <input placeholder="Student Address" onkeyup="validation(this,2)" type="text" id="swal-input3" class="form-control swal2-input" style="width:80%"/></label>
+        <label style = "display:flex"> <p style="width:25%; margin-top: revert;">Age</p> <input placeholder="Student Age" onkeyup="validation(this,3)" type="number" id="swal-input4" class="form-control swal2-input" style="width:80%"/></label>
         `,
 
     focusConfirm: true,
@@ -67,6 +70,7 @@ async function sweetinputs() {
       showDenyButton: true,
       showCancelButton: true,
       confirmButtonText: "Save",
+      confirmButtonColor: "#218838",
       denyButtonText: `Don't save`,
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
@@ -85,7 +89,7 @@ function validation(V, flag) {
   let condition;
   //Student name validation
   if (flag == 0) {
-    condition = /^[A-Z][a-z]{2,10}$/;
+    condition = /^[A-Z][a-z,',-]+(\s)[A-Z][a-z,',-]+$/;
     if (condition.test(V.value)) {
       i1 = true;
       V.classList.add("is-valid");
@@ -108,6 +112,7 @@ function validation(V, flag) {
     }
     //Student Address Validation
   } else if (flag == 2) {
+    condition = /^[#.0-9a-zA-Z\s,-]+$/;
     if (V.value.length >= 5 && V.value.length <= 200) {
       i3 = true;
       V.classList.add("is-valid");
@@ -167,18 +172,15 @@ function storeData(Data) {
 function Display() {
   let val = "";
   for (let i = 0; i < students.length; i++) {
-    val += `
-                <tr>
-                    <td><h4>${i + 1}</h4></td>
-                    <td><h5>${students[i].name}</h5></td>
-                    <td><h5>${students[i].average}% </h5></td>
-                    <td style="width : 20%"><h5>${
-                      students[i].address
-                    }</h5></td>          
-                    <td><h5>${students[i].age}</h5></td>
-                    <td><button onclick="delete_item(${i})" class="btn btn-danger"> <i class="fa-solid fa-trash"></i></button></td>
-                    <td><button onclick="edit_item(${i})" class="btn btn-info"><i class="fa-solid fa-pen"></i></button></td>
-                </tr>`;
+    val += `<tr>
+                <td>${i + 1}</td>
+                <td>${students[i].name}</td>
+                <td>${students[i].average}%</td>
+                <td>${students[i].address}</td>          
+                <td>${students[i].age}</td>
+                <td><button onclick="edit_item(${i})" class="btn btn-info"> <i class="fa-solid fa-pen"></i></button></td>
+                <td><button onclick="delete_item(${i})" class="btn btn-danger"><i class="fa-solid fa-trash"></i></button></td>
+            </tr>`;
   }
   rows.innerHTML = val;
 }
@@ -237,13 +239,15 @@ function edit_item(index) {
 
 async function sweetupdate(INDEX) {
   const { value: formValues } = await Swal.fire({
-    title: "Update " + students[INDEX].name + " student information",
-    confirmButtonText: "update Student",
-    html: `
-    <label style = "display:flex"> <h5 style="width:30%; margin-top: revert;">Student Name :</h5>  <input placeholder="Name" onkeyup="validation(this,0)"  type="text" id="swal-input1" class="form-control  swal2-input " style="width:80%"/></label>
-    <label style = "display:flex"> <h5 style="width:30%; margin-top: revert;">Student Average:</h5> <input placeholder="Average" onkeyup="validation(this,1)" type="number" id="swal-input2" class="form-control swal2-input" style="width:80%"/></label>
-    <label style = "display:flex"> <h5 style="width:30%; margin-top: revert;">Student Address:</h5>  <input placeholder="Address" onkeyup="validation(this,2)" type="text" id="swal-input3" class="form-control swal2-input" style="width:80%"/></label>
-    <label style = "display:flex"> <h5 style="width:30%; margin-top: revert;">Student Age:</h5> <input placeholder="Age" onkeyup="validation(this,3)" type="number" id="swal-input4" class="form-control swal2-input" style="width:80%"/></label>
+    title: "Update Student " + students[INDEX].name + " Information",
+    confirmButtonText: "Update record",
+    confirmButtonColor: "#4361ee",
+    html:
+        `
+        <label style = "display:flex"> <p style="width:25%; margin-top: revert;">Name</p>    <input placeholder="Student Name" onkeyup="validation(this,0)"  type="text" id="swal-input1" class="form-control  swal2-input " style="width:80%"/></label>
+        <label style = "display:flex"> <p style="width:25%; margin-top: revert;">Average</p> <input placeholder="Student Average" onkeyup="validation(this,1)" type="number" id="swal-input2" class="form-control swal2-input" style="width:80%"/></label>
+        <label style = "display:flex"> <p style="width:25%; margin-top: revert;">Address</p> <input placeholder="Student Address" onkeyup="validation(this,2)" type="text" id="swal-input3" class="form-control swal2-input" style="width:80%"/></label>
+        <label style = "display:flex"> <p style="width:25%; margin-top: revert;">Age</p>     <input placeholder="Student Age" onkeyup="validation(this,3)" type="number" id="swal-input4" class="form-control swal2-input" style="width:80%"/></label>
         `,
 
     focusConfirm: true,
@@ -262,14 +266,15 @@ async function sweetupdate(INDEX) {
       showDenyButton: true,
       showCancelButton: true,
       confirmButtonText: "Save",
+      confirmButtonColor: "#218838",
       denyButtonText: `Don't save`,
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
         update(JSON.stringify(formValues), INDEX);
-        Swal.fire("Saved student Update", "", "success");
+        Swal.fire("Student record were updated.", "", "success");
       } else if (result.isDenied) {
-        Swal.fire("Changes are not saved", "", "info");
+        Swal.fire("Changes are not saved.", "", "info");
       }
     });
   }
@@ -335,36 +340,30 @@ function search_data(value, column) {
     table_content = "";
     for (let i = 0; i < students.length; i++) {
       if (students[i].name.includes(value.value)) {
-        table_content += `
-        <tr>
-            <td><h4>${i + 1}</h4></td>
-            <td><h5>${students[i].name}</h5></td>
-            <td><h5>${students[i].average}% </h5></td>
-            <td style="width : 20%"><h5>${
-              students[i].address
-            }</h5></td>          
-            <td><h5>${students[i].age}</h5></td>
-            <td><button onclick="delete_item(${i})" class="btn btn-danger"> <i class="fa-solid fa-trash"></i></button></td>
-            <td><button onclick="edit_item(${i})" class="btn btn-info"><i class="fa-solid fa-pen"></i></button></td>
-        </tr>`;
+        table_content += `<tr>
+                            <td>${i + 1}</td>
+                            <td>${students[i].name}</td>
+                            <td>${students[i].average}%</td>
+                            <td style="width : 20%">${students[i].address}</td>          
+                            <td>${students[i].age}</td>
+                            <td><button onclick="edit_item(${i})" class="btn btn-info"> <i class="fa-solid fa-pen"></i></button></td>
+                            <td><button onclick="delete_item(${i})" class="btn btn-danger"><i class="fa-solid fa-trash"></i></button></td>
+                            </tr>`;
       }
     }
   } else if (column === 1) {
     table_content = "";
     for (let i = 0; i < students.length; i++) {
       if (students[i].address.includes(value.value)) {
-        table_content += `
-        <tr>
-        <td><h4>${i + 1}</h4></td>
-        <td><h5>${students[i].name}</h5></td>
-        <td><h5>${students[i].average}% </h5></td>
-        <td style="width : 20%"><h5>${
-          students[i].address
-        }</h5></td>          
-        <td><h5>${students[i].age}</h5></td>
-        <td><button onclick="delete_item(${i})" class="btn btn-danger"> <i class="fa-solid fa-trash"></i></button></td>
-        <td><button onclick="edit_item(${i})" class="btn btn-info"><i class="fa-solid fa-pen"></i></button></td>
-    </tr>`;
+        table_content += `<tr>
+                            <td>${i + 1}</td>
+                            <td>${students[i].name}</td>
+                            <td>${students[i].average}%</td>
+                            <td style="width : 20%">${students[i].address}</td>          
+                            <td>${students[i].age}</td>
+                            <td><button onclick="edit_item(${i})" class="btn btn-info"> <i class="fa-solid fa-pen"></i></button></td>
+                            <td><button onclick="delete_item(${i})" class="btn btn-danger"><i class="fa-solid fa-trash"></i></button></td>
+                        </tr>`;
       }
     }
   }

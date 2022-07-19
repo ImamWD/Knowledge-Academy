@@ -24,7 +24,7 @@ function display() {
             </div>
         </div>
         <div class="courseImgDiv text-center">
-            <img src="imgs/courses-image/${Courses[id].Image}" alt="Course Image" id="courseImg">
+            <img src="${Courses[id].Image}" alt="Course Image" id="courseImg">
             <p class="coursePrice"><span class="bold">Course Price:</span> ${Courses[id].Price}<span class="red">$</span></p>
             <button type="button" class="btn" id="btn" style="margin-right: 5px;">Enroll course</button>
         </div>
